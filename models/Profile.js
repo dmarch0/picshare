@@ -32,7 +32,7 @@ const ProfileShema = new mongoose.Schema({
       }
     }
   ],
-  followers: [
+  follows: [
     {
       profile: {
         type: mongoose.Schema.Types.ObjectId,

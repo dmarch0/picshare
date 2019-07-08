@@ -1,12 +1,14 @@
 const validator = require("validator");
 const isEmpty = require("./isEmpty");
+const axios = require("axios");
 
-const validateRegisterInput = data => {
+const validateRegisterInput = async data => {
   const errors = {};
   data.name = !isEmpty(data.name) ? data.name : "";
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   data.password2 = !isEmpty(data.password2) ? data.password2 : "";
+  data.avatar = !isEmpty(data.avatar) ? data.avatar : "";
 
   if (!validator.isLength(data.name, { min: 2, max: 30 })) {
     errors.name = "Name must be between 2 and 30 characters";
@@ -38,6 +40,20 @@ const validateRegisterInput = data => {
 
   if (!validator.equals(data.password, data.password2)) {
     errors.password2 = "Passwords must match";
+  }
+
+  if (data.avatar) {
+    let avatarError = "";
+
+    if (!validator.isURL(data.avatar)) {
+      avatarError = "Not a valid URL";
+    }
+
+    try {
+      const response = await axios.get(data.avatar);
+    } catch (err) {
+      errors.avatar = "Image not found";
+    }
   }
 
   return {

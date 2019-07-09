@@ -22,8 +22,7 @@ router.get("/test", (req, res) => res.json({ msg: "profiles works" }));
 //@access public
 router.post("/register", async (req, res) => {
   //validation
-  const result = await validateRegisterInput(req.body);
-  const { errors, isValid } = result;
+  const { errors, isValid } = await validateRegisterInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
   }
@@ -66,29 +65,35 @@ router.post("/login", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  Profile.findOne({ email: req.body.email }).then(user => {
-    bcrypt.compare(req.body.password, user.password).then(isMatch => {
-      if (isMatch) {
-        const payload = {
-          id: user.id,
-          name: user.name,
-          avatar: user.avatar,
-          desc: user.desc
-        };
+  Profile.findOne({ email: req.body.email })
+    .then(user => {
+      bcrypt.compare(req.body.password, user.password).then(isMatch => {
+        if (isMatch) {
+          const payload = {
+            id: user.id,
+            name: user.name,
+            avatar: user.avatar,
+            desc: user.desc
+          };
 
-        //Sign token
-        jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) =>
-          res.json({
-            success: true,
-            token: "Bearer " + token
-          })
-        );
-      } else {
-        errors.password = "Incorrect password";
-        return res.status(400).json(errors);
-      }
-    });
-  });
+          //Sign token
+          jwt.sign(
+            payload,
+            keys.secretOrKey,
+            { expiresIn: 3600 },
+            (err, token) =>
+              res.json({
+                success: true,
+                token: "Bearer " + token
+              })
+          );
+        } else {
+          errors.password = "Incorrect password";
+          return res.status(400).json(errors);
+        }
+      });
+    })
+    .catch(err => res.json({ emailnotfound: "Email not found" }));
 });
 
 //@route POST api/profiles/description
@@ -105,17 +110,17 @@ router.post(
         } else {
           user.desc = req.body.desc;
 
-          if (validateAvatarURL(req.body.avatar)) {
-            return res
-              .status(400)
-              .json({ avatar: validateAvatarURL(req.body.avatar) });
-          } else {
-            user.avatar = req.body.avatar;
-            user
-              .save()
-              .then(() => res.status(200).json(user))
-              .catch(err => console.log(err));
-          }
+          // if (validateAvatarURL(req.body.avatar)) {
+          //   return res
+          //     .status(400)
+          //     .json({ avatar: validateAvatarURL(req.body.avatar) });
+          // } else {
+          //   user.avatar = req.body.avatar;
+          //   user
+          //     .save()
+          //     .then(() => res.status(200).json(user))
+          //     .catch(err => console.log(err));
+          // }
         }
       })
       .catch(err => console.log(err));
@@ -129,7 +134,9 @@ router.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.json(req.user);
+    Profile.findById(req.user.id)
+      .then(profile => res.json(profile))
+      .catch(err => res.status(404).json({ notfound: "Profile not found" }));
   }
 );
 

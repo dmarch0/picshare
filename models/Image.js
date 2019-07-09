@@ -5,6 +5,10 @@ const ImageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "profile"
+  },
   likes: [
     {
       profile: {
@@ -13,11 +17,22 @@ const ImageSchema = new mongoose.Schema({
       }
     }
   ],
+  date: {
+    type: Date,
+    required: true,
+    default: Date.now
+  },
   comments: [
     {
       profile: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "profile"
+      },
+      name: {
+        type: String
+      },
+      avatar: {
+        type: String
       },
       text: {
         type: String,

@@ -140,6 +140,19 @@ router.get(
   }
 );
 
+//@rout GET api/profiles/:id
+//@desc get profile by id
+//@access private
+router.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findById(req.params.id)
+      .then(profile => res.json(profile))
+      .catch(err => res.status(404).json({ notfound: "Profile not foundc" }));
+  }
+);
+
 //@route POST api/profiles/follow/:id
 //@desc follow profile
 //@access private

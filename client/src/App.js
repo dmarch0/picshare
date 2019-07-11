@@ -1,5 +1,6 @@
 import React from "react";
 import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, compose, applyMiddleware } from "redux";
@@ -23,6 +24,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
       </Router>
     </Provider>
   );

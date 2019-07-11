@@ -4,8 +4,17 @@ import jwt_decode from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
 
 export const registerUser = formValues => dispatch => {
-  
-}
+  axios({
+    method: "post",
+    url: "http://localhost:5000/api/profiles/register",
+    data: formValues,
+    mode: "no-cors"
+  })
+    .then(res => console.log(res.data))
+    .catch(error =>
+      dispatch({ type: GET_ERRORS, payload: error.response.data })
+    );
+};
 
 export const loginUser = formValues => dispatch => {
   axios({

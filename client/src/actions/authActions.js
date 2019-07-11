@@ -3,6 +3,10 @@ import { SET_CURRENT_USER, GET_ERRORS } from "./types";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
 
+export const registerUser = formValues => dispatch => {
+  
+}
+
 export const loginUser = formValues => dispatch => {
   axios({
     method: "post",

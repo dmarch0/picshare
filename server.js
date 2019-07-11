@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
-
+const cors = require("cors");
 //Importing routes
 const images = require("./routes/api/images");
 const profiles = require("./routes/api/profiles");
@@ -16,6 +16,7 @@ const db = require("./config/keys").mongoDB;
 app.use(passport.initialize());
 require("./config/passport")(passport);
 
+app.use(cors());
 //Connecting database
 mongoose
   .connect(db)

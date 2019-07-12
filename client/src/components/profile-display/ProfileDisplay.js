@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
+import ProfileCard from "./ProfileCard";
+import ProfileAlbum from "./ProfileAlbum";
 
 const ProfileDisplay = props => {
   const [images, setImages] = useState([]);
@@ -17,7 +19,12 @@ const ProfileDisplay = props => {
     })();
   }, []);
 
-  return <div>{images ? images.map(image => <img src={image} />) : null}</div>;
+  return (
+    <div className="container">
+      <ProfileCard />
+      <ProfileAlbum images={images} />
+    </div>
+  );
 };
 
 const mapStateToProps = state => {

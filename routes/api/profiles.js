@@ -201,7 +201,7 @@ router.get("/profile_images/:id", (req, res) => {
       const payload = { images: [] };
       for (let i = 0; i < profile.images.length; i++) {
         const image = await Image.findById(profile.images[i].image);
-        payload.images.push(image.imageURL);
+        payload.images.push({ url: image.imageURL, id: image.id });
       }
       res.json(payload);
     })

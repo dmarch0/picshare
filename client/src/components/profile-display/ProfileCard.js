@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 const ProfileCard = props => {
   return (
@@ -20,6 +21,13 @@ const ProfileCard = props => {
             <div className="text-center col-10 col-md-6">
               <h1 className="display-6">{props.auth.user.name}</h1>
               <p className="lead">{props.auth.user.desc}</p>
+            </div>
+            <div>
+              {props.profile_id === props.auth.user.id ? (
+                <Link to="/edit-profile" className="btn btn-info">
+                  Edit profile
+                </Link>
+              ) : null}
             </div>
           </div>
         </div>

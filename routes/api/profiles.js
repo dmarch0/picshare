@@ -3,11 +3,13 @@ const Profile = require("../../models/Profile");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const axios = require("axios");
 
 //Validation functions
 const isEmpty = require("../../validation/isEmpty");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
+const validator = require("validator");
 
 //Keys
 const keys = require("../../config/keys");
@@ -97,31 +99,47 @@ router.post("/login", (req, res) => {
     .catch(err => res.json({ emailnotfound: "Email not found" }));
 });
 
-//@route POST api/profiles/description
+//@route POST api/profiles/edit
 //@desc edit profile description or avatar
 //@access private
 router.post(
-  "/description",
+  "/edit",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Profile.findById(req.user.id)
-      .then(user => {
-        if (req.user.id !== user._id) {
+      .then(async user => {
+        if (req.user.id !== user.id) {
           return res.status(401).json({ notauthorized: "User not authorized" });
         } else {
-          user.desc = req.body.desc;
+          const errors = {};
+          const desc = req.body.desc ? req.body.desc : "";
+          if (!validator.isLength(desc, { min: 6, max: 100 })) {
+            errors.desc = "Description must be between 6 and 100 characters";
+          } else {
+            user.desc = req.body.desc;
+          }
 
-          // if (validateAvatarURL(req.body.avatar)) {
-          //   return res
-          //     .status(400)
-          //     .json({ avatar: validateAvatarURL(req.body.avatar) });
-          // } else {
-          //   user.avatar = req.body.avatar;
-          //   user
-          //     .save()
-          //     .then(() => res.status(200).json(user))
-          //     .catch(err => console.log(err));
-          // }
+          if (!validator.isURL(req.body.avatar)) {
+            errors.avatar = "Not a valid URL";
+            return res.status(400).json(errors);
+          }
+
+          try {
+            const response = await axios.get(req.body.avatar);
+            if (!response.headers["content-type"] === "image/jpeg") {
+              errors.avatar = "Not a valid image";
+              return res.status(400).json(errors);
+            }
+            user.avatar = req.body.avatar;
+            user
+              .save()
+              .then(user => res.json(user))
+              .catch(err => console.log(err));
+          } catch (err) {
+            errors.avatar = "Image not available";
+            console.log(err);
+            return res.status(400).json(errors);
+          }
         }
       })
       .catch(err => console.log(err));

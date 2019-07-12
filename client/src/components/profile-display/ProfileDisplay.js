@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import ProfileCard from "./ProfileCard";
 import ProfileAlbum from "./ProfileAlbum";
 
+//TODO: correctly display user info, based on url and not on auth state
 const ProfileDisplay = props => {
   const [images, setImages] = useState([]);
   useEffect(() => {
@@ -21,7 +22,7 @@ const ProfileDisplay = props => {
 
   return (
     <div className="container">
-      <ProfileCard />
+      <ProfileCard profile_id={props.match.params.profile_id} />
       <ProfileAlbum images={images} />
     </div>
   );

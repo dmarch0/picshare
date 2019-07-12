@@ -11,6 +11,7 @@ import setAuthToken from "./utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 import { setCurrentUser } from "./actions/authActions";
 import ProfileDisplay from "./components/profile-display/ProfileDisplay";
+import EditProfile from "./components/profile-display/EditProfile";
 
 const initialState = {};
 const middleware = [thunk];
@@ -37,9 +38,12 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/:profile_id" component={ProfileDisplay} />
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/profile/:profile_id" component={ProfileDisplay} />
+          <Route exact path="/edit-profile" component={EditProfile} />
+        </Switch>
         <Switch>
           <ProtectedRoute exact path="/feed" />
         </Switch>

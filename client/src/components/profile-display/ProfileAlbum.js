@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ProfileAlbum = props => {
   const columns = [];
@@ -8,11 +9,13 @@ const ProfileAlbum = props => {
   const renderImages = columns.map((column, index) => (
     <div style={{ flex: "25%", maxWidth: "25%", padding: "0 4px" }} key={index}>
       {column.map(image => (
-        <img
-          key={image.id}
-          src={image.url}
-          style={{ marginTop: "8px", verticalAlign: "middle", width: "100%" }}
-        />
+        <Link to={`/image-display/${image.id}`}>
+          <img
+            key={image.id}
+            src={image.url}
+            style={{ marginTop: "8px", verticalAlign: "middle", width: "100%" }}
+          />
+        </Link>
       ))}
     </div>
   ));

@@ -3,8 +3,8 @@ import axios from "axios";
 import { connect } from "react-redux";
 import ProfileCard from "./ProfileCard";
 import ProfileAlbum from "./ProfileAlbum";
+import { getProfile } from "../../actions/profileActions";
 
-//TODO: correctly display user info, based on url and not on auth state
 const ProfileDisplay = props => {
   const [images, setImages] = useState([]);
   useEffect(() => {
@@ -20,6 +20,10 @@ const ProfileDisplay = props => {
     })();
   }, []);
 
+  useEffect(() => {
+    props.getProfile(props.match.params.profile_id);
+  });
+
   return (
     <div className="container">
       <ProfileCard profile_id={props.match.params.profile_id} />
@@ -29,10 +33,10 @@ const ProfileDisplay = props => {
 };
 
 const mapStateToProps = state => {
-  return {};
+  return { profile: state.profile };
 };
 
 export default connect(
   mapStateToProps,
-  {}
+  { getProfile }
 )(ProfileDisplay);

@@ -5,7 +5,7 @@ import { loginUser } from "../../actions/authActions";
 
 class Login extends React.Component {
   onSubmit = formValues => {
-    this.props.loginUser(formValues);
+    this.props.loginUser(formValues, this.props.history);
   };
   render() {
     return (

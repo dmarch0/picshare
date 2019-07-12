@@ -3,20 +3,20 @@ import { SET_CURRENT_USER, GET_ERRORS } from "./types";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
 
-export const registerUser = formValues => dispatch => {
+export const registerUser = (formValues, history) => dispatch => {
   axios({
     method: "post",
     url: "http://localhost:5000/api/profiles/register",
     data: formValues,
     mode: "no-cors"
   })
-    .then(res => console.log(res.data))
+    .then(res => history.push("/login"))
     .catch(error =>
       dispatch({ type: GET_ERRORS, payload: error.response.data })
     );
 };
 
-export const loginUser = formValues => dispatch => {
+export const loginUser = (formValues, history) => dispatch => {
   axios({
     method: "post",
     url: "http://localhost:5000/api/profiles/login",
@@ -29,6 +29,7 @@ export const loginUser = formValues => dispatch => {
       setAuthToken(token);
       const decoded = jwt_decode(token);
       dispatch(setCurrentUser(decoded));
+      history.push("/feed");
     })
     .catch(error => {
       dispatch({ type: GET_ERRORS, payload: error.response.data });

@@ -73,7 +73,8 @@ router.post("/login", (req, res) => {
             id: user.id,
             name: user.name,
             avatar: user.avatar,
-            desc: user.desc
+            desc: user.desc,
+            follows: user.follows
           };
 
           //Sign token
@@ -190,5 +191,23 @@ router.post(
       });
   }
 );
+
+//@route GET api/profiles/profile_images/:id
+//@desc get images to display
+//@access public
+router.get("/profile_images/:id", (req, res) => {
+  Profile.findById(req.params.id)
+    .then(async profile => {
+      const payload = { images: [] };
+      for (let i = 0; i < profile.images.length; i++) {
+        const image = await Image.findById(profile.images[i].image);
+        payload.images.push(image.imageURL);
+      }
+      res.json(payload);
+    })
+    .catch(err =>
+      res.status(404).json({ profilenotfound: "Profile not found" })
+    );
+});
 
 module.exports = router;

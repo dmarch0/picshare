@@ -12,6 +12,7 @@ import jwt_decode from "jwt-decode";
 import { setCurrentUser } from "./actions/authActions";
 import ProfileDisplay from "./components/profile-display/ProfileDisplay";
 import EditProfile from "./components/profile-display/EditProfile";
+import ImageDisplay from "./components/image-display/ImageDisplay";
 
 const initialState = {};
 const middleware = [thunk];
@@ -26,11 +27,11 @@ const store = createStore(
 );
 
 if (localStorage.jwt_token) {
-  console.log("Im here");
+  //Check if token exists, then set axios default
   setAuthToken(localStorage.jwt_token);
 
+  //set curren user
   const decoded = jwt_decode(localStorage.jwt_token);
-
   store.dispatch(setCurrentUser(decoded));
 }
 
@@ -42,6 +43,7 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile/:profile_id" component={ProfileDisplay} />
+          <Route exact path="/image/:image_id" component={ImageDisplay} />
           <Route exact path="/edit-profile" component={EditProfile} />
         </Switch>
         <Switch>

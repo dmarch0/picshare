@@ -125,6 +125,7 @@ router.post(
           }
 
           try {
+            //Check if image is jpeg
             const response = await axios.get(req.body.avatar);
             if (!response.headers["content-type"] === "image/jpeg") {
               errors.avatar = "Not a valid image";
@@ -136,6 +137,7 @@ router.post(
               .then(user => res.json(user))
               .catch(err => console.log(err));
           } catch (err) {
+            //If image is not available
             errors.avatar = "Image not available";
             console.log(err);
             return res.status(400).json(errors);
@@ -213,6 +215,7 @@ router.get("/profile_images/:id", (req, res) => {
   Profile.findById(req.params.id)
     .then(async profile => {
       const payload = { images: [] };
+      //Find all images in profile
       for (let i = 0; i < profile.images.length; i++) {
         const image = await Image.findById(profile.images[i].image);
         payload.images.push({ url: image.imageURL, id: image.id });
@@ -233,6 +236,7 @@ router.delete(
   (req, res) => {
     Profile.findByIdAndDelete(req.user.id)
       .then(profile => {
+        //Remove all images from images db
         for (let image of profile.images) {
           Image.findByIdAndDelete(image.image);
         }

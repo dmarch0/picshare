@@ -11,6 +11,17 @@ const isEmpty = require("../../validation/isEmpty");
 //@access public
 router.get("/test", (req, res) => res.json({ msg: "images works" }));
 
+//@rout POST api/images/:id
+//@desc get image by id
+//@access public
+router.get("/:id", (req, res) => {
+  Image.findById(req.params.id)
+    .then(image => {
+      res.json(image);
+    })
+    .catch(err => res.status(404).json({ imagenotfound: "Image not found" }));
+});
+
 //@rout POST api/images/new
 //@desc add new image
 //@access private

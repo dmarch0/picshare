@@ -162,15 +162,11 @@ router.get(
 //@rout GET api/profiles/:id
 //@desc get profile by id
 //@access private
-router.get(
-  "/:id",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Profile.findById(req.params.id)
-      .then(profile => res.json(profile))
-      .catch(err => res.status(404).json({ notfound: "Profile not foundc" }));
-  }
-);
+router.get("/:id", (req, res) => {
+  Profile.findById(req.params.id)
+    .then(profile => res.json(profile))
+    .catch(err => res.status(404).json({ notfound: "Profile not foundc" }));
+});
 
 //@route POST api/profiles/follow/:id
 //@desc follow profile
@@ -227,5 +223,22 @@ router.get("/profile_images/:id", (req, res) => {
       res.status(404).json({ profilenotfound: "Profile not found" })
     );
 });
+
+//@route DELETE api/profiles
+//@desc detele profile
+//@access private
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findByIdAndDelete(req.user.id)
+      .then(profile => {
+        for (let image of profile.images) {
+          Image.findByIdAndDelete(image.image);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+);
 
 module.exports = router;

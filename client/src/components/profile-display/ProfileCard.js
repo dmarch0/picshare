@@ -24,7 +24,7 @@ const ProfileCard = props => {
               <p className="lead">{props.profile.desc}</p>
             </div>
             <div>
-              {props.profile_id === props.profile.id ? (
+              {props.profile_id === props.auth.user.id ? (
                 <Link to="/edit-profile" className="btn btn-info">
                   Edit profile
                 </Link>
@@ -38,7 +38,7 @@ const ProfileCard = props => {
 };
 
 const mapStateToProps = state => {
-  return { profile: state.profile };
+  return { profile: state.profile, auth: state.auth };
 };
 
 export default connect(

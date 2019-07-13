@@ -10,7 +10,6 @@ class Register extends Component {
 
   render() {
     const error = this.props.formError;
-    console.log(error);
     return (
       <div className="container">
         <form onSubmit={this.props.handleSubmit(this.onSubmit)}>

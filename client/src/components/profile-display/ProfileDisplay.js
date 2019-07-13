@@ -22,7 +22,7 @@ const ProfileDisplay = props => {
 
   useEffect(() => {
     props.getProfile(props.match.params.profile_id);
-  });
+  }, []);
 
   return (
     <div className="container">

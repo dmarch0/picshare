@@ -24,11 +24,20 @@ export const loginUser = (formValues, history) => dispatch => {
     mode: "no-cors"
   })
     .then(res => {
+      //Get token from response
       const { token } = res.data;
+
+      //Write token to local storage
       localStorage.setItem("jwt_token", token);
+
+      //Setup axios default
       setAuthToken(token);
+
+      //Decode token and set current user
       const decoded = jwt_decode(token);
       dispatch(setCurrentUser(decoded));
+
+      //Redirect
       history.push("/feed");
     })
     .catch(error => {

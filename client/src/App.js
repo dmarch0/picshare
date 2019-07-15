@@ -46,9 +46,6 @@ function App() {
           <Route exact path="/image/:image_id" component={ImageDisplay} />
           <Route exact path="/edit-profile" component={EditProfile} />
         </Switch>
-        <Switch>
-          <ProtectedRoute exact path="/feed" />
-        </Switch>
       </Router>
     </Provider>
   );

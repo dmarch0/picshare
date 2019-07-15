@@ -44,7 +44,7 @@ const ImageDisplay = props => {
           </button>
         </div>
       )}
-      <CommentForm />
+      {props.auth.isAuthenticated && <CommentForm />}
       <Comments />
     </div>
   );

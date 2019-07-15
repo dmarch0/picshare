@@ -36,3 +36,13 @@ export const deleteComment = (id, comment_id) => dispatch => {
     .then(res => dispatch({ type: GET_IMAGE, payload: res.data }))
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
+
+export const addComment = (formValues, id) => dispatch => {
+  axios({
+    method: "post",
+    url: `http://localhost:5000/api/images/comment/${id}`,
+    data: formValues
+  })
+    .then(res => dispatch({ type: GET_IMAGE, payload: res.data }))
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+};

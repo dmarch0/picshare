@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { followProfile, unfollowProfile } from "../../actions/profileActions";
 
 const ProfileCard = props => {
   return (
@@ -24,10 +25,29 @@ const ProfileCard = props => {
               <p className="lead">{props.profile.desc}</p>
             </div>
             <div>
-              {props.profile_id === props.auth.user.id ? (
-                <Link to="/edit-profile" className="btn btn-info">
-                  Edit profile
-                </Link>
+              {props.auth.isAuthenticated ? (
+                props.profile_id === props.auth.user.id ? (
+                  <Link to="/edit-profile" className="btn btn-info">
+                    Edit profile
+                  </Link>
+                ) : props.auth.user.follows.filter(
+                    profile => profile._id === props.profile._id
+                  ).length > 0 ? (
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => props.unfollowProfile(props.profile_id)}
+                  >
+                    Unfollow
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-info"
+                    onClick={() => props.followProfile(props.profile_id)}
+                  >
+                    {" "}
+                    Follow
+                  </button>
+                )
               ) : null}
             </div>
           </div>
@@ -43,5 +63,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {}
+  { followProfile, unfollowProfile }
 )(ProfileCard);

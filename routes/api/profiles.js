@@ -213,6 +213,47 @@ router.post(
   }
 );
 
+//@route DELETE api/profiles/follow/:id
+//@desc unfollow profile
+//@access private
+router.delete(
+  "/follow/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+    Profile.findById(req.user.id)
+      .then(profile => {
+        //Check if trying to unfollow self
+        if (profile._id.toString() === req.params.id) {
+          errors.cannotfollowyourself = "Cannot unfollow yourself";
+          return res.status(400).json(errors);
+        }
+
+        //Check if not yet following
+        if (
+          profile.follows.filter(
+            follows => follows._id.toString() === req.params.id
+          ).length === 0
+        ) {
+          errors.alreadyfollowing = "Not yet following";
+          return res.status(400).json(errors);
+        } else {
+          const newFollows = profile.follows.filter(
+            profile => profile._id.toString() !== req.params.id
+          );
+          profile.follows = newFollows;
+          profile
+            .save()
+            .then(() => res.json(profile))
+            .catch(err => console.log(err));
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+);
+
 //@route GET api/profiles/profile_images/:id
 //@desc get images to display
 //@access public

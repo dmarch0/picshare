@@ -9,7 +9,7 @@ const ProfileAlbum = props => {
   const renderImages = columns.map((column, index) => (
     <div style={{ flex: "25%", maxWidth: "25%", padding: "0 4px" }} key={index}>
       {column.map(image => (
-        <Link to={`/image-display/${image.id}`}>
+        <Link to={`/image/${image.id}`}>
           <img
             key={image.id}
             src={image.url}

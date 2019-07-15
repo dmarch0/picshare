@@ -11,7 +11,7 @@ const isEmpty = require("../../validation/isEmpty");
 //@access public
 router.get("/test", (req, res) => res.json({ msg: "images works" }));
 
-//@rout POST api/images/:id
+//@rout GET api/images/:id
 //@desc get image by id
 //@access public
 router.get("/:id", (req, res) => {
@@ -188,7 +188,6 @@ router.post(
 //@rout DELETE api/images/comment/:id/:comment_id
 //@desc Delete comment
 //@access private
-
 router.delete(
   "/comment/:id/:comment_id",
   passport.authenticate("jwt", { session: false }),
@@ -221,6 +220,52 @@ router.delete(
         }
       })
       .catch(err => res.status(404).json({ imagenotfound: "Image not found" }));
+  }
+);
+
+//@rout GET api/images/feed
+//@desc Get feed
+//@access private
+router.get(
+  "/feed/getfeed",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findById(req.user.id)
+      .then(async profile => {
+        const images = { images: [] };
+
+        const queryImages = [];
+        for (let follow of profile.follows) {
+          const profile = await Profile.findById(follow._id);
+          for (let image of profile.images) {
+            const currentImage = await Image.findById(image.image);
+            queryImages.push({
+              imageURL: currentImage.imageURL,
+              id: currentImage._id,
+              date: currentImage.date
+            });
+          }
+        }
+
+        queryImages.sort((imageA, imageB) => {
+          if (imageA.date < imageB.date) {
+            return 1;
+          }
+          if (imageA.date > imageB.date) {
+            return -1;
+          }
+          return 0;
+        });
+        console.log(queryImages.length);
+        let spliceIndexStart = req.body.page * 10;
+        let spliceIndexFinish = Math.max(
+          spliceIndexStart + 10,
+          queryImages.length
+        );
+        images.images = queryImages.slice(spliceIndexStart, spliceIndexFinish);
+        res.json(images);
+      })
+      .catch(err => console.log(err));
   }
 );
 

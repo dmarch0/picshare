@@ -37,11 +37,13 @@ export const getFeed = page => async dispatch => {
 };
 
 export const nextPage = currentPage => (dispatch, getState) => {
+  window.scrollTo(0, 0);
   dispatch({ type: NEXT_PAGE });
   dispatch(getFeed(currentPage + 1));
 };
 
 export const prevPage = currentPage => dispatch => {
+  window.scrollTo(0, 0);
   dispatch({ type: PREV_PAGE });
   dispatch(getFeed(currentPage - 1));
 };

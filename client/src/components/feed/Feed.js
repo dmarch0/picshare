@@ -7,7 +7,9 @@ const Feed = props => {
   useEffect(() => {
     props.getFeed(props.feed.pageCounter);
   }, []);
-  return (
+  return props.auth.user.follows.length === 0 ? (
+    <div>You have not yet followed anyone</div>
+  ) : (
     <div className="container">
       {props.feed.images.length > 0
         ? props.feed.images.map(image => (
@@ -34,6 +36,8 @@ const Feed = props => {
               </div>
             </div>
           ))
+        : props.error.imagesnotfound
+        ? "Images not found"
         : "Loading"}
       <div className="row">
         {" "}
@@ -59,7 +63,7 @@ const Feed = props => {
 };
 
 const mapStateToProps = state => {
-  return { error: state.error, feed: state.feed };
+  return { error: state.error, feed: state.feed, auth: state.auth };
 };
 
 export default connect(

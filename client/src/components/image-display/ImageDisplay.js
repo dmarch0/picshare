@@ -4,12 +4,16 @@ import CommentForm from "./CommentForm";
 import { connect } from "react-redux";
 import { getImage } from "../../actions/imageActions";
 import { likeImage, unlikeImage } from "../../actions/imageActions";
+import NotFound from "../common/NotFound";
 
 const ImageDisplay = props => {
   useEffect(() => {
     props.getImage(props.match.params.image_id);
   }, []);
-  return (
+
+  return props.error.imagenotfound || Object.keys(props.image).length === 0 ? (
+    <NotFound item="Image" />
+  ) : (
     <div className="container">
       <div className="row">
         <img src={props.image.imageURL} />{" "}
@@ -49,9 +53,8 @@ const ImageDisplay = props => {
     </div>
   );
 };
-
 const mapStateToProps = state => {
-  return { image: state.image, auth: state.auth };
+  return { image: state.image, auth: state.auth, error: state.error };
 };
 
 export default connect(

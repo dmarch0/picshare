@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import ProfileCard from "./ProfileCard";
 import ProfileAlbum from "./ProfileAlbum";
 import { getProfile } from "../../actions/profileActions";
+import NotFound from "../common/NotFound";
 
 const ProfileDisplay = props => {
   const [images, setImages] = useState([]);
@@ -26,14 +27,20 @@ const ProfileDisplay = props => {
 
   return (
     <div className="container">
-      <ProfileCard profile_id={props.match.params.profile_id} />
-      <ProfileAlbum images={images} />
+      {props.error.notfound ? (
+        <NotFound item="Profile" />
+      ) : (
+        <div>
+          <ProfileCard profile_id={props.match.params.profile_id} />
+          <ProfileAlbum images={images} />
+        </div>
+      )}
     </div>
   );
 };
 
 const mapStateToProps = state => {
-  return { profile: state.profile };
+  return { profile: state.profile, error: state.error };
 };
 
 export default connect(

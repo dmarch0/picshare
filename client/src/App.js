@@ -15,6 +15,7 @@ import EditProfile from "./components/profile-display/EditProfile";
 import ImageDisplay from "./components/image-display/ImageDisplay";
 import AddImageForm from "./components/profile-display/AddImageForm";
 import Feed from "./components/feed/Feed";
+import Navbar from "./components/layout/Navbar";
 
 const initialState = {
   feed: { pageCounter: 0, images: [], lastPage: false, loading: false }
@@ -43,6 +44,7 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
+        <Navbar />
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SET_CURRENT_USER, GET_ERRORS } from "./types";
+import { SET_CURRENT_USER, GET_ERRORS, LOGOUT } from "./types";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
 
@@ -49,5 +49,14 @@ export const setCurrentUser = decoded => {
   return {
     type: SET_CURRENT_USER,
     payload: decoded
+  };
+};
+
+export const logoutUser = history => {
+  history.push("/login");
+  localStorage.removeItem("jwt_token");
+  setAuthToken(false);
+  return {
+    type: LOGOUT
   };
 };

@@ -15,7 +15,7 @@ class Login extends React.Component {
           <div className="col-md-8 m-auto">
             <h1 className="text-center display-4">Login</h1>
             <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
-              <div className="input-group">
+              <div className="input-group mb-3">
                 <Field
                   component="input"
                   name="email"
@@ -30,7 +30,7 @@ class Login extends React.Component {
                   <div className="invalid-feedback">{error.email}</div>
                 )}
               </div>
-              <div className="input-group">
+              <div className="input-group mb-3">
                 <Field
                   component="input"
                   name="password"

@@ -233,7 +233,7 @@ router.delete(
   }
 );
 
-//@rout GET api/images/feed
+//@rout GET api/images/feed/getfeed
 //@desc Get feed
 //@access private
 router.get(
@@ -243,7 +243,6 @@ router.get(
     Profile.findById(req.user.id)
       .then(async profile => {
         const images = { images: [] };
-
         const queryImages = [];
         for (let follow of profile.follows) {
           const profile = await Profile.findById(follow._id);
@@ -267,13 +266,16 @@ router.get(
           return 0;
         });
 
-        let spliceIndexStart = req.body.page * 10;
-        let spliceIndexFinish = Math.max(
+        let spliceIndexStart = Number(req.query.page) * 10;
+        let spliceIndexFinish = Math.min(
           spliceIndexStart + 10,
           queryImages.length
         );
         images.images = queryImages.slice(spliceIndexStart, spliceIndexFinish);
-        res.json(images);
+        if (images.images.length === 0) {
+          return res.status(404).json({ imagesnotfound: "Images not found" });
+        }
+        return res.json(images);
       })
       .catch(err => console.log(err));
   }

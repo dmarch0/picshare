@@ -14,8 +14,11 @@ import ProfileDisplay from "./components/profile-display/ProfileDisplay";
 import EditProfile from "./components/profile-display/EditProfile";
 import ImageDisplay from "./components/image-display/ImageDisplay";
 import AddImageForm from "./components/profile-display/AddImageForm";
+import Feed from "./components/feed/Feed";
 
-const initialState = {};
+const initialState = {
+  feed: { pageCounter: 0, images: [], lastPage: false, loading: false }
+};
 const middleware = [thunk];
 
 const store = createStore(
@@ -47,6 +50,7 @@ function App() {
           <Route exact path="/image/:image_id" component={ImageDisplay} />
           <Route exact path="/edit-profile" component={EditProfile} />
           <Route exact path="/add-image" component={AddImageForm} />
+          <Route exact path="/feed" component={Feed} />
         </Switch>
       </Router>
     </Provider>

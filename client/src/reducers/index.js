@@ -4,6 +4,7 @@ import authReducer from "./authReducer";
 import errorReducer from "./errorReducer";
 import profileReducer from "./profileReducer";
 import imageReducer from "./imageReducer";
+import feedReducer from "./feedReducer";
 
 export default combineReducers({
   test: () => 5,
@@ -11,5 +12,6 @@ export default combineReducers({
   auth: authReducer,
   error: errorReducer,
   profile: profileReducer,
-  image: imageReducer
+  image: imageReducer,
+  feed: feedReducer
 });

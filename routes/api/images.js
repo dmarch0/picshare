@@ -3,7 +3,7 @@ const passport = require("passport");
 const Profile = require("../../models/Profile");
 const Image = require("../../models/Image");
 const axios = require("axios");
-
+const validator = require("validator");
 const isEmpty = require("../../validation/isEmpty");
 
 //@rout GET api/images/test
@@ -30,29 +30,39 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     //Validate input
-    const response = await axios.get(req.body.imageURL);
-    if (response.headers["content-type"] === "image/jpeg") {
-      const newImage = new Image({
-        imageURL: req.body.imageURL,
-        author: req.user.id
-      });
-      newImage
-        .save()
-        .then(image => {
-          Profile.findById(req.user.id).then(profile => {
-            profile.images.push({ image: image._id });
-            profile
-              .save()
-              .then(profile => {
-                res.json({ image: image, profile: profile });
-              })
-              .catch(err => console.log(err));
-          });
-        })
-        .catch(err => console.log(err));
-    } else {
-      const errors = {};
-      errors.notavalidimage = "Not a valid image";
+    const errors = {};
+    if (!validator.isURL(req.body.imageURL)) {
+      errors.image = "Not a valid url";
+      return res.status(400).json(errors);
+    }
+    try {
+      const response = await axios.get(req.body.imageURL);
+      if (response.headers["content-type"] === "image/jpeg") {
+        const newImage = new Image({
+          imageURL: req.body.imageURL,
+          author: req.user.id
+        });
+        newImage
+          .save()
+          .then(image => {
+            Profile.findById(req.user.id).then(profile => {
+              profile.images.push({ image: image._id });
+              profile
+                .save()
+                .then(profile => {
+                  res.json({ image: image, profile: profile });
+                })
+                .catch(err => console.log(err));
+            });
+          })
+          .catch(err => console.log(err));
+      } else {
+        const errors = {};
+        errors.image = "Not a valid image";
+        return res.status(400).json(errors);
+      }
+    } catch (err) {
+      errors.image = "Image not found";
       return res.status(400).json(errors);
     }
   }
@@ -256,7 +266,7 @@ router.get(
           }
           return 0;
         });
-        console.log(queryImages.length);
+
         let spliceIndexStart = req.body.page * 10;
         let spliceIndexFinish = Math.max(
           spliceIndexStart + 10,

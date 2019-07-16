@@ -27,9 +27,14 @@ const ProfileCard = props => {
             <div>
               {props.auth.isAuthenticated ? (
                 props.profile_id === props.auth.user.id ? (
-                  <Link to="/edit-profile" className="btn btn-info">
-                    Edit profile
-                  </Link>
+                  <div>
+                    <Link to="/edit-profile" className="btn btn-info">
+                      Edit profile
+                    </Link>
+                    <Link to="/add-image" className="btn btn-success">
+                      Add image
+                    </Link>
+                  </div>
                 ) : props.auth.user.follows.filter(
                     profile => profile._id === props.profile._id
                   ).length > 0 ? (

@@ -46,3 +46,13 @@ export const addComment = (formValues, id) => dispatch => {
     .then(res => dispatch({ type: GET_IMAGE, payload: res.data }))
     .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
 };
+
+export const addImage = (formValues, history) => dispatch => {
+  axios({
+    method: "post",
+    url: "http://localhost:5000/api/images/new",
+    data: formValues
+  })
+    .then(res => history.push(`/profile/${res.data.profile._id}`))
+    .catch(err => dispatch({ type: GET_ERRORS, payload: err.response.data }));
+};

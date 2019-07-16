@@ -13,6 +13,7 @@ import { setCurrentUser } from "./actions/authActions";
 import ProfileDisplay from "./components/profile-display/ProfileDisplay";
 import EditProfile from "./components/profile-display/EditProfile";
 import ImageDisplay from "./components/image-display/ImageDisplay";
+import AddImageForm from "./components/profile-display/AddImageForm";
 
 const initialState = {};
 const middleware = [thunk];
@@ -45,6 +46,7 @@ function App() {
           <Route exact path="/profile/:profile_id" component={ProfileDisplay} />
           <Route exact path="/image/:image_id" component={ImageDisplay} />
           <Route exact path="/edit-profile" component={EditProfile} />
+          <Route exact path="/add-image" component={AddImageForm} />
         </Switch>
       </Router>
     </Provider>

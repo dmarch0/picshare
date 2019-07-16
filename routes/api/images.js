@@ -204,17 +204,13 @@ router.delete(
   (req, res) => {
     Image.findById(req.params.id)
       .then(image => {
-        if (
-          image.comments.filter(
-            comment => comment._id.toString() === req.params.comment_id
-          ).length === 0
-        ) {
+        const comment = image.comments.filter(
+          comment => comment._id.toString() === req.params.comment_id
+        )[0];
+
+        if (!comment) {
           return res.status(404).json({ commentnotfound: "Comment not found" });
-        } else if (
-          image.comments.find(
-            comment => comment.profile.toString() !== req.user.id
-          )
-        ) {
+        } else if (comment.profile.toString() !== req.user.id) {
           return res
             .status(401)
             .json({ usernotauthorized: "User not authorized" });

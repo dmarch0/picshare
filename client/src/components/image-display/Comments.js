@@ -5,9 +5,9 @@ import CommentDisplay from "./CommentDisplay";
 const Comments = props => {
   return (
     <div>
-      {props.image.comments
-        ? props.image.comments.map(comment => {
-            return <CommentDisplay comment={comment} />;
+      {props.image.image.comments
+        ? props.image.image.comments.map(comment => {
+            return <CommentDisplay comment={comment} key={comment._id} />;
           })
         : "Loading"}
     </div>

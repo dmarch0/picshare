@@ -11,7 +11,7 @@ const CommentForm = props => {
         <div className="card-body">
           <form
             onSubmit={props.handleSubmit(formValues => {
-              props.addComment(formValues, props.image._id);
+              props.addComment(formValues, props.image.image._id);
             })}
           >
             <Field

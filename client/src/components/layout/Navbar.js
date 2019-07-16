@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { logoutUser } from "../../actions/authActions";
 
 const Navbar = props => {
+  console.log(props);
   const loggedInLinks = (
     <div>
       <ul className="navbar-nav mr-auto">

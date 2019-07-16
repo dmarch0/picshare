@@ -9,3 +9,4 @@ export const PREV_PAGE = "PREV_PAGE";
 export const LAST_PAGE = "LAST_PAGE";
 export const LOADING = "LOADING";
 export const LOGOUT = "LOGOUT";
+export const IMG_LOADING = "IMG_LOADING";

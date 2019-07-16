@@ -1,7 +1,8 @@
-import { GET_IMAGE, GET_ERRORS } from "./types";
+import { GET_IMAGE, GET_ERRORS, IMG_LOADING } from "./types";
 import axios from "axios";
 
 export const getImage = id => dispatch => {
+  dispatch({ type: IMG_LOADING });
   axios({
     method: "get",
     url: `http://localhost:5000/api/images/${id}`

@@ -18,7 +18,8 @@ import Feed from "./components/feed/Feed";
 import Navbar from "./components/layout/Navbar";
 
 const initialState = {
-  feed: { pageCounter: 0, images: [], lastPage: false, loading: false }
+  feed: { pageCounter: 0, images: [], lastPage: false, loading: false },
+  image: { image: {}, loading: true }
 };
 const middleware = [thunk];
 
@@ -44,7 +45,7 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <Navbar />
+        <Route component={Navbar} path="/" />
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />

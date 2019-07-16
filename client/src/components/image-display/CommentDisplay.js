@@ -9,7 +9,7 @@ const CommentDisplay = props => {
         <div className="col-md-2">
           <img
             className="rounded-circle d-none d-md-block"
-            style={{ width: "200px", height: "200px" }}
+            style={{ width: "100px", height: "100px" }}
             src={
               props.comment.avatar
                 ? props.comment.avatar
@@ -26,7 +26,7 @@ const CommentDisplay = props => {
           <button
             className="btn btn-danger"
             onClick={() =>
-              props.deleteComment(props.image._id, props.comment._id)
+              props.deleteComment(props.image.image._id, props.comment._id)
             }
           >
             Delete

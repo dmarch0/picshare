@@ -30,7 +30,7 @@ export const getFeed = page => async dispatch => {
     if (res.data.images.length < 10) {
       dispatch({ type: LAST_PAGE });
     }
-    dispatch({ type: GET_FEED, payload: res.data });
+    dispatch({ type: GET_FEED, payload: res.data.images });
   } catch (err) {
     dispatch({ type: GET_ERRORS, payload: err.response.data });
   }

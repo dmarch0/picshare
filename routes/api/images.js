@@ -251,7 +251,10 @@ router.get(
             queryImages.push({
               imageURL: currentImage.imageURL,
               id: currentImage._id,
-              date: currentImage.date
+              date: currentImage.date,
+              name: profile.name,
+              avatar: profile.avatar,
+              profile: profile._id
             });
           }
         }
